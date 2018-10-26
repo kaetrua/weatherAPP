@@ -171,6 +171,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             eventType = xmlPullParser.next();
                             todayWeather.setUpdatetime(xmlPullParser.getText());
                         } else if (xmlPullParser.getName().equals("shidu")) {
+                            eventType = xmlPullParser.next();
                             todayWeather.setShidu(xmlPullParser.getText());
                         } else if (xmlPullParser.getName().equals("wendu")) {
                             eventType = xmlPullParser.next();
