@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +16,13 @@ public class CityDB {
     private SQLiteDatabase db;
 
     public CityDB(Context context, String path) {
-        db = context.openOrCreateDatabase(path, Context.MODE_PRIVATE, null);
+        db = context.openOrCreateDatabase(path, Context.MODE_PRIVATE, null);//打开或新建db
     }
 
-    public List<City> getAllCity() {
-        List<City> list = new ArrayList<City>();
-        Cursor c = db.rawQuery("SELECT * from " + CITY_TABLE_NAME, null);
-        int a=c.getCount();
-        String str =c.toString();
-        while (c.moveToNext()) {
+    public ArrayList<City> getAllCity() {//从db按字段获取数据
+        ArrayList<City> list = new ArrayList<City>();
+        Cursor c = db.rawQuery("SELECT * from " + CITY_TABLE_NAME, null);//设置游标
+        while (c.moveToNext()) {//遍历
             String province = c.getString(c.getColumnIndex("province"));
             String city = c.getString(c.getColumnIndex("city"));
             String number = c.getString(c.getColumnIndex("number"));

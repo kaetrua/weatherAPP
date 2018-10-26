@@ -32,4 +32,13 @@
             android:background="#A71717"
             android:gravity="center" />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_top">
+        <ListView
+            android:id="@+id/list_city"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </RelativeLayout>
 </RelativeLayout>
