@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView mUpdateBtn, mCitySelect;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv, temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
+    private ProgressBar refPBar;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -59,6 +61,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
+        refPBar = (ProgressBar) findViewById(R.id.title_update_progress);
         mUpdateBtn.setOnClickListener(this);
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
@@ -80,10 +83,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {//点击事件
         if (view.getId() == R.id.title_city_manager) {//点击城市列表的按钮
             SharedPreferences sharedPreferences = getSharedPreferences("config",MODE_PRIVATE);//获取sp
-            Intent i = new Intent(this, SelectCity.class).putExtra("nowCity",sharedPreferences.getString("cityf","北京"));//sp城市名传给selectcity，默认值为 北京
+            Intent i = new Intent(this, SelectCity.class).putExtra("nowCity",sharedPreferences.getString("city","北京"));//sp城市名传给selectcity，默认值为 北京
             startActivityForResult(i, 1);//跳转
         }
         if (view.getId() == R.id.title_update_btn) {//点击更新按钮
+            mUpdateBtn.setVisibility(View.GONE);
+            refPBar.setVisibility(View.VISIBLE);//切换刷新按钮状态，以防误触
+            Log.e("bar", "onClick: " );
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             String cityCode = sharedPreferences.getString("main_city_code", "101010100");//获取sp里的城市代码，默认值为北京代码
             Log.d("myWeather", cityCode);
@@ -295,6 +301,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     void updateTodayWeather(TodayWeather todayWeather) {//更新天气信息
 
+        mUpdateBtn.setVisibility(View.VISIBLE);
+        refPBar.setVisibility(View.GONE);//恢复刷新按钮
         //获取sharedPreferences对象
         SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
         //获取editor对象

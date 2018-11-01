@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,10 +34,13 @@ public class SelectCity extends Activity implements View.OnClickListener{
     private ImageView mBackBTM;
     private ListView mList;
     private TextView mTitle;
+    private SearchView mSearchView;
+
+    private ArrayAdapter mAdapter;
 
     private ArrayList<City> cityList ;
     private ArrayList<String> data;
-    private int mPos;
+    private String mNCC ="";
 
     private static MyApplication mApplication;
 
@@ -73,19 +77,41 @@ public class SelectCity extends Activity implements View.OnClickListener{
         mBackBTM.setOnClickListener(this);
         mList=(ListView)findViewById(R.id.list_city);
         mTitle=(TextView)findViewById(R.id.title_name);
-        mTitle.setText("当前城市："+cityinfo);
+        mSearchView = (SearchView) findViewById(R.id.search);
+        mSearchView.setIconifiedByDefault(false);//搜索框样式
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {//搜索框监听器
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);//按文字过滤listview
+                return false;
+            }
+        });
+        mTitle.setText("当前城市："+cityinfo);//更新title
         Log.d(TAG, mList.toString());
-        ArrayAdapter<String>adapter = new ArrayAdapter<String>(SelectCity.this,android.R.layout.simple_list_item_1,data);//简单适配器，显示城市名列表
-        mList.setAdapter(adapter);//绑定
+        mAdapter = new ArrayAdapter<String>(SelectCity.this,android.R.layout.simple_list_item_1,data);//简单适配器，显示城市名列表/
+        mList.setAdapter(mAdapter);//绑定
+        mList.setTextFilterEnabled(true); // 开启过滤功能
         //listview点击事件
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mPos = position;
                 //使用dialog 以防误触
                 AlertDialog.Builder builder = new AlertDialog.Builder(SelectCity.this);
                 builder.setTitle("提醒");
-                builder.setMessage("你确定要将城市切换到"+cityList.get(mPos).getProvince()+" - "+cityList.get(mPos).getCity()+"吗?");//dialog提示信息
+                String nowProv ="";
+                String nowCit ="";
+                for(City s:cityList ){//通过适配器获取的当前点击城市名，获取其相应的省、市、城市代码
+                    if(s.getCity()==mAdapter.getItem(position)){
+                        nowProv=s.getProvince();
+                        nowCit=s.getCity();
+                        mNCC=s.getNumber();
+                    }
+                }
+                builder.setMessage("你确定要将城市切换到"+nowProv+" - "+nowCit+"吗?");//dialog提示信息
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -96,8 +122,8 @@ public class SelectCity extends Activity implements View.OnClickListener{
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(SelectCity.this, "你点击的是" + mPos, Toast.LENGTH_SHORT).show();//activity会销毁，实际上用户看不到，用于判断当前标号，也可用log打印
-                        Intent i = new Intent(SelectCity.this, MainActivity.class).putExtra("cityCode", cityList.get(mPos).getNumber());//将点击的城市代码传给主页面
+//                        Toast.makeText(SelectCity.this, "你点击的是" + mPos, Toast.LENGTH_SHORT).show();//activity会销毁，实际上用户看不到，用于判断当前标号，也可用log打印
+                        Intent i = new Intent(SelectCity.this, MainActivity.class).putExtra("cityCode", mNCC);//将点击的城市代码传给主页面
                         setResult(10, i);
                         //一定要销毁当前Activity  不然你绝对跳不回去，
                         finish();

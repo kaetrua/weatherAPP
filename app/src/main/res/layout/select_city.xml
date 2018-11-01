@@ -36,8 +36,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_top">
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:queryHint="搜索全国城市天气（中文）">
+        </SearchView>
         <ListView
             android:id="@+id/list_city"
+            android:layout_below="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></ListView>
     </RelativeLayout>
