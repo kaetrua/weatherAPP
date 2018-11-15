@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/vpview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10.0dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/ft_weather_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="星期一"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/ft_weather_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ft_weather_date"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/biz_plugin_weather_qing" />
+    <!-- 城市名称 -->
+    <TextView
+        android:id="@+id/ft_weather_wd"
+        android:layout_below="@id/ft_weather_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="4-6"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"  />
+
+    <TextView
+        android:id="@+id/ft_weather_tq"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ft_weather_wd"
+        android:text="晴"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/ft_weather_fl"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ft_weather_tq"
+        android:text="微风"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"  />
+</RelativeLayout>

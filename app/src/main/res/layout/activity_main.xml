@@ -76,6 +76,17 @@
     <!-- 今日天气信息 -->
    <include android:id="@+id/weather_today"  layout="@layout/main_today_weather" ></include>
     <!-- 六日天气信息 -->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:overScrollMode="never"
+            android:paddingLeft="10.0dip"
+            android:paddingRight="10.0dip" />
+
+
     <!-- 广告等信息 -->
     </LinearLayout>
 </RelativeLayout>
